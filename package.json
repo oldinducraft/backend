@@ -21,11 +21,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^8.4.4",
     "@nestjs/core": "^8.4.4",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.3",
     "env-var": "^7.1.1",
+    "joi": "^17.6.0",
+    "joi-extract-type": "0.0.6",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -71,5 +74,7 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "sourceMap": true,
+  "instrument": true
 }

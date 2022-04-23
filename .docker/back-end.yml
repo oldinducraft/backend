@@ -18,6 +18,17 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     restart: unless-stopped
+    depends_on:
+      - "mysql-dev"
+    environment:
+      DB_HOST: 'localhost'
+      DB_USER: 'root'
+      DB_PASSWORD: 'password'
+      DB_TYPE: 'mysql'
+      DB_SCHEMAS: 'old_home'
+      DB_PORT: 3306
+
+
   prod:
     container_name: nestjs_api_prod
     image: nestjs-api-prod:1.0.0

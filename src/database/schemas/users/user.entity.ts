@@ -13,17 +13,20 @@ export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
+	@Column({ unique: true })
 	email: string;
 
-	@Column()
-	nickname: string;
+	@Column({ unique: true })
+	username: string;
 
 	@Column({ default: true })
 	isActive: boolean;
 
 	@Column()
 	password: string;
+
+	@Column()
+	dateOfBerth: Date;
 
 	@ManyToOne((type) => Roles, (role) => role.users)
 	role: Roles;
