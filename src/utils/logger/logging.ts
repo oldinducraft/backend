@@ -32,7 +32,7 @@ export class Log implements CustomLogger {
     try {
       const logFormat = format.printf(
         (info) =>
-          `${info.timestamp.gray} :${name || 'unknown'}:-> |${info.level} ${
+          `${info.timestamp} :${name || 'unknown'}:-> |${info.level} ${
             info.oc
           } |:-> ${info.message} - ${JSON.stringify(info.metadata)}${
             info.metadata.stack ? `\n${info.metadata.stack}` : ''

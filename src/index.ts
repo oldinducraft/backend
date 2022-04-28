@@ -1,11 +1,49 @@
-import express, { Express } from 'express';
+import express from 'express';
 import { Log } from './utils/logger/logging';
+const log: Log = new Log();
+//TODO get from env var
+const httpPort = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
-const log = new Log();
+//TODO set aup dotenv config
+class App {
+  public express: express.Application;
 
-const port = 3000;
-const app: Express = express();
+  constructor(
+    private log: Log,
+    private options: { socket: boolean; http: boolean; client: boolean },
+  ) {
+    this.express = express();
+    this.options = options;
+  }
 
-app.listen(port, () => {
-  log.info({ message: 'LOG TEST' });
-});
+  // private mountDB() {}
+
+  public startServer(): any {
+    if (!!this.options.http) {
+      this.log.info({ message: `test log http` });
+    }
+
+    if (!!this.options.socket) {
+      this.log.info({ message: `test log socket` });
+    }
+
+    if (!!this.options.client) {
+      this.log.info({ message: `test log client` });
+    }
+
+    this.express
+      .listen(httpPort, () => {
+        this.log.info({ message: `Started on port :${httpPort}` });
+      })
+      .on('error', (error: Error) => {
+        this.log.error({
+          message: 'Start up failed',
+          stack: error.stack || '',
+        });
+      });
+  }
+}
+
+const app = new App(log, { socket: false, http: true, client: false });
+
+app.startServer();
