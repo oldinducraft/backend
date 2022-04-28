@@ -1,7 +1,7 @@
 import { createLogger, format, Logger, transports } from 'winston';
 import { Syslog } from 'winston-syslog';
 import * as Transport from 'winston-transport';
-import * as env from 'env-var';
+// import * as env from 'env-var';
 
 import { CustomLogger, LogArgs, LogFormat } from './';
 
@@ -10,12 +10,15 @@ const { name } = require(`${process.cwd()}/package.json`);
 
 let logInstance: Logger;
 
-const _LOG_DEFAULT_LEVEL: string = env
-  .get('LOG_DEFAULT_LEVEL')
-  .required()
-  .asEnum(['info', 'debug', 'error']);
+// const _LOG_DEFAULT_LEVEL: string = env
+//   .get('LOG_DEFAULT_LEVEL')
+//   .required()
+//   .asEnum(['info', 'debug', 'error']);
 
-const _SYSTEM_LOG: boolean = env.get('SYSTEM_LOG').required().asBool();
+// const _SYSTEM_LOG: boolean = env.get('SYSTEM_LOG').required().asBool();
+
+const _LOG_DEFAULT_LEVEL = 'info';
+const _SYSTEM_LOG = true;
 
 export class Log implements CustomLogger {
   public log!: Logger;
@@ -30,7 +33,7 @@ export class Log implements CustomLogger {
       const logFormat = format.printf(
         (info) =>
           `${info.timestamp.gray} :${name || 'unknown'}:-> |${info.level} ${
-            info.oc.green
+            info.oc
           } |:-> ${info.message} - ${JSON.stringify(info.metadata)}${
             info.metadata.stack ? `\n${info.metadata.stack}` : ''
           }`,
