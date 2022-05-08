@@ -7,18 +7,33 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: 'old_home'
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_DATABASE: old_home
+      MYSQL_ROOT_PASSWORD: password
     volumes:
       - my-db:/var/lib/mysql
-
-
-  adminer:
-    image: adminer
-    restart: always
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
+      - db-network
     ports:
       - 3306:3306
+
+  # Найти создателя этого говна и трахнуть всю его семью на его глазах и блять выебать его в обе глазници ПОТОМ ПОЯЛЬНИКОМ МЕДЛИННО ПРОВОДИТЬ ПО ЕГО КОЖЕ ПОКА ОН СУКА НЕ ПРИВРОТИТСЯ В УГОЛЬ И ПОСЛЕ ЧЕГО НАМАЗАТЬ КРЕМОМ ЗВЕЗДОЧКА ЧТОБ ОН СУКА ПОЛЕНЯЛ ЕБУЧАЯ ЗМЕЯ ЕБАННАЯ
+  # ЕБИ ЕГО ЕБАННЫЙ КОНЬ В ЕЛДЫШЛО БЛЯТЬ
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   networks:
+  #     - default
+  #     - db-network
+  #   ports:
+  #      - 8080:8080
 
 volumes:
   my-db:
     driver: local
+
+networks:
+  db-network:
+    external: true
+
