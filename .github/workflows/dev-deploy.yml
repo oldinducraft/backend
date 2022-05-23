@@ -13,7 +13,7 @@ env:
 jobs:
 
   build:
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, ene-devarm]
     steps:
       - uses: actions/checkout@v2
       - name: list files
@@ -47,7 +47,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, ene-devarm]
     steps:
       - uses: actions/checkout@v2
       - name: list files
