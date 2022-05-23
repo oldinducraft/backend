@@ -28,4 +28,5 @@ COPY . .
 COPY --from=build /usr/src/app/dist ./dist
 
 #CMD ["node", "dist/main"]
-ENTRYPOINT npm run start:$envirompment_name
+ARG enviroment_name
+ENTRYPOINT npm run start:$enviroment_name

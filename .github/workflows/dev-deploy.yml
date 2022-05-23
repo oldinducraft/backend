@@ -4,12 +4,12 @@ on:
   push:
     # Publish `dev` as Docker `dev` image.
     branches:
-      - CI/CD
+      - cicd
 
 env:
   GITHUB_REF: ${{ github.ref }}
   GITHUB_REPOSITORY: ${{ github.repository }}
-  ENVIROMPMENT_NAME: debug
+  ENVIROMENT_NAME: debug
 jobs:
 
   build:
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and tag image app
         run: |
-          docker build -f .docker/Dockerfile -t thing --cache-from="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}" --build-arg envirompment_name="${ENVIROMPMENT_NAME}" .
+          docker build -f .docker/Dockerfile -t thing --cache-from="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}" --build-arg enviroment_name="${ENVIROMENT_NAME}" .
           docker tag thing "ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
 
       # Publish image to github package repository:
