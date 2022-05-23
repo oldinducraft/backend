@@ -78,5 +78,5 @@ jobs:
           docker image pull $CI_REGISTRY_IMAGE
           docker ps
           docker image ls          
-          docker stack deploy -c .deploy/docker-compose.yml -c .deploy/docker-compose-${GITHUB_REF##*/}.yml dev-${CI_PROJECT_NAME} --with-registry-auth
+          docker stack deploy -c .docker/docker-compose.yml -c .docker/docker-compose-${GITHUB_REF##*/}.yml dev-${CI_PROJECT_NAME} --with-registry-auth
           rm -rf $DOCKER_CERT_PATH
