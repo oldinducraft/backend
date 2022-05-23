@@ -12,6 +12,10 @@ COPY . .
 
 RUN npm run build
 
+ARG enviroment_name
+ENV enviroment_name=$enviroment_name
+ENTRYPOINT npm run start:$enviroment_name
+
 FROM node:12.19.0-alpine3.9 as production
 
 ARG NODE_ENV=production
