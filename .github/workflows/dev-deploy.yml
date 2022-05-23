@@ -65,7 +65,7 @@ jobs:
 
       - name: Deploy to dev
         env:
-          DOCKER_HOST: tcp://ene-devarm.enemon.pp.ua:2317
+          DOCKER_HOST: tcp://ene-devarm.s.enemon.pp.ua:2317
           DOCKER_TLS_VERIFY: 1
           DOCKER_CERT_PATH: "/tmp/certs"
         run: |
