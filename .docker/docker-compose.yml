@@ -1,40 +1,46 @@
 version: '3.8'
 
 services:
-  dev:
-    container_name: nestjs_api_dev
-    image: nestjs-api-dev:1.0.0
-    build:
-      context: .
-      target: development
-      dockerfile: ../Dockerfile
-    command: npm run start:debug
-    ports:
-      - 3000:3000
-      - 9229:9229
+  app:
+    image: ${CI_REGISTRY_IMAGE}
     networks:
-      - nesjs-network
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    restart: unless-stopped
-  prod:
-    container_name: nestjs_api_prod
-    image: nestjs-api-prod:1.0.0
-    build:
-      context: .
-      target: production
-      dockerfile: ../Dockerfile
-    command: npm run start:prod
-    ports:
-      - 3000:3000
-      - 9229:9229
-    networks:
-      - nesjs-network
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    restart: unless-stopped
+      - default
+      - ext
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 2048M
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}.loadbalancer.server.port=80"
+
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.service=${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.middlewares=secure-headers@file"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.entrypoints=https"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.tls=true"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.tls.certresolver=le"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_http.service=${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_http.middlewares=secure-headers@file"
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_http.entrypoints=http"        
+    # healthcheck:
+    #   test: curl -k -f http://localhost/health || exit 1   #need return HTTP/OK
+    #   interval: 10s
+    #   timeout: 20s
+    #   retries: 3
+    #   start_period: 20s
 
 networks:
-  nesjs-network:
+  ext:
+    external: true
+    name: ingress_external

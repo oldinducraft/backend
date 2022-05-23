@@ -1,4 +1,4 @@
-FROM node:12.19.0-alpine3.9 AS development
+FROM node:12.19.0-alpine3.9 AS build
 
 WORKDIR /usr/src/app
 
@@ -25,6 +25,7 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/dist ./dist
 
-CMD ["node", "dist/main"]
+#CMD ["node", "dist/main"]
+ENTRYPOINT npm run start:$envirompment_name
