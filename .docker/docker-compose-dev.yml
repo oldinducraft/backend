@@ -8,5 +8,5 @@ services:
           cpus: '2.00'
           memory: 2048M
       labels:
-        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"
-        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_http.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_http.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"
