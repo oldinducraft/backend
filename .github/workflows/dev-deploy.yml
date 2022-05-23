@@ -9,7 +9,7 @@ on:
 env:
   GITHUB_REF: ${{ github.ref }}
   GITHUB_REPOSITORY: ${{ github.repository }}
-  ENVIROMENT_NAME: debug
+  ENVIROMENT_NAME: dev
 jobs:
 
   build:
