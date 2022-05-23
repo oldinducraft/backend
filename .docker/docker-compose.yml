@@ -23,7 +23,7 @@ services:
         window: 120s
       labels:
         - "traefik.enable=true"
-        - "traefik.http.services.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}.loadbalancer.server.port=80"
+        - "traefik.http.services.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}.loadbalancer.server.port=3000"
 
         - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.service=${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}"
         - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.middlewares=secure-headers@file"
