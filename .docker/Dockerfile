@@ -29,4 +29,5 @@ COPY --from=build /usr/src/app/dist ./dist
 
 #CMD ["node", "dist/main"]
 ARG enviroment_name
+ENV enviroment_name=$enviroment_name
 ENTRYPOINT npm run start:$enviroment_name
