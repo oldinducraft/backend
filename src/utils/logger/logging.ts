@@ -48,14 +48,14 @@ export class Log implements CustomLogger {
         }),
         format.metadata({
           fillExcept: [
-            'message',
-            'level',
-            'timestamp',
-            'error',
             'process',
             'os',
             'exception',
+            'timestamp',
             'date',
+            'level',
+            'error',
+            'message',
           ],
         }),
         logFormat,
@@ -82,7 +82,7 @@ export class Log implements CustomLogger {
       });
 
       this.log = logInstance;
-      this.log.debug('Log instance created');
+      this.log.debug('|logging.ts||Log| Log instance created');
 
       this.log.on('error', (e) => {
         console.log(e, '|logging.ts||Log| ERROR');
@@ -93,17 +93,17 @@ export class Log implements CustomLogger {
   }
 
   public debug(data: LogFormat): void {
-    const logArgs = this.serializeArgs(data);
+    const logArgs = this.serializeLogInfo(data);
     this.log.debug(logArgs);
   }
 
   public error(data: LogFormat & { stack: string }): void {
-    const logArgs = this.serializeArgs(data);
+    const logArgs = this.serializeLogInfo(data);
     this.log.error(logArgs);
   }
 
   public info(data: LogFormat): void {
-    const logArgs = this.serializeArgs(data);
+    const logArgs = this.serializeLogInfo(data);
     this.log.info(logArgs);
   }
 
@@ -117,7 +117,7 @@ export class Log implements CustomLogger {
     return info;
   });
 
-  private serializeArgs(args: LogFormat & { stack?: string }): LogArgs {
+  private serializeLogInfo(args: LogFormat & { stack?: string }): LogArgs {
     const {
       message,
       stack,
