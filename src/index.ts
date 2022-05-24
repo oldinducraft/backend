@@ -1,7 +1,7 @@
 import express from 'express';
 import { Log } from './utils/logger/logging';
 import * as env from 'env-var';
-import { Database } from './utils/database/database';
+// import { Database } from './utils/database/database';
 const log: Log = new Log();
 //TODO get from env var
 const httpPort = env.get('PORT').asIntPositive() || 3333;
@@ -9,7 +9,7 @@ const httpPort = env.get('PORT').asIntPositive() || 3333;
 //TODO set aup dotenv config
 class App {
   public express: express.Application;
-  private connectDatabase: Database;
+  // private connectDatabase: Database;
 
   constructor(
     private log: Log,
@@ -18,13 +18,13 @@ class App {
     this.express = express();
     this.options = options;
 
-    const database = new Database(this.log, 5_000, 30_000);
-    this.connectDatabase = database;
+    // const database = new Database(this.log, 5_000, 30_000);
+    // this.connectDatabase = database;
   }
 
-  public db(tableName: string) {
-    return this.connectDatabase.main(tableName);
-  }
+  // public db(tableName: string) {
+  //   return this.connectDatabase.main(tableName);
+  // }
 
   public startServer(): any {
     if (!!this.options.http) {
