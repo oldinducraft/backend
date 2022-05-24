@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  app:
+    image: ${CI_REGISTRY_IMAGE}
+    networks:
+      - default
+      - ext
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 2048M
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.dev-${CI_PROJECT_NAME}.loadbalancer.server.port=3000"
+
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.service=dev-${CI_PROJECT_NAME}"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.middlewares=secure-headers@file"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.entrypoints=https"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.tls=true"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.tls.certresolver=le"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_http.service=dev-${CI_PROJECT_NAME}"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_http.middlewares=secure-headers@file"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_http.entrypoints=http"
+    environment:
+      DB_HOST: 'localhost'
+      DB_USER: 'root'
+      DB_PASSWORD: 'password'
+      DB_TYPE: 'mysql'
+      DB_SCHEMAS: 'old_home'
+      DB_PORT: 3306
+    # healthcheck:
+    #   test: curl -k -f http://localhost/health || exit 1   #need return HTTP/OK
+    #   interval: 10s
+    #   timeout: 20s
+    #   retries: 3
+    #   start_period: 20s
+  db:
+    image: mysql:8.0.29-oracle
+    command: --default-authentication-plugin=mysql_native_password
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1024M
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      MYSQL_DATABASE: old_home
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - my-db:/var/lib/mysql
+      #- ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  my-db:
+    driver: local
+
+networks:
+  ext:
+    external: true
+    name: ingress_external

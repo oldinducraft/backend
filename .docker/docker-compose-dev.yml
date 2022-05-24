@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2048M
+      labels:
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"
+        - "traefik.http.routers.dev-${CI_PROJECT_NAME}_http.rule=Host(`oic-back.ene-devarm.enemon.pp.ua`)"

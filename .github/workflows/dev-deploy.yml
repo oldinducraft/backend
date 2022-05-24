@@ -1,0 +1,83 @@
+name: build/deploy docker image from prod
+
+on:
+  push:
+    # Publish `dev` as Docker `dev` image.
+    branches:
+      - cicd
+
+env:
+  GITHUB_REF: ${{ github.ref }}
+  GITHUB_REPOSITORY: ${{ github.repository }}
+  ENVIROMENT_NAME: dev
+jobs:
+
+  build:
+    runs-on: [self-hosted, ene-devarm]
+    steps:
+      - uses: actions/checkout@v2
+      - name: list files
+        run: ls -al
+
+      - name: Set up environment variables
+        run: |
+          export CI_COMMIT_REF_SHORT=${GITHUB_REF##*/}
+          echo "CI_COMMIT_REF_SLUG=${CI_COMMIT_REF_SHORT//./_}" >> $GITHUB_ENV
+          echo "CI_PROJECT_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Pull Docker image:
+      - name: Pull previous image
+        run: |
+          export CI_REGISTRY_IMAGE="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
+          docker image pull $CI_REGISTRY_IMAGE || true
+
+      - name: Build and tag image app
+        run: |
+          echo "${ENVIROMENT_NAME}"
+          docker build -f .docker/Dockerfile -t thing --cache-from="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}" --build-arg enviroment_name="${ENVIROMENT_NAME}" --target=build .
+          docker tag thing "ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
+
+      # Publish image to github package repository:
+      - name: Publish image app
+        run: |
+          docker push "ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, ene-devarm]
+    steps:
+      - uses: actions/checkout@v2
+      - name: list files
+        run: ls -al
+
+      - name: Set up environment variables
+        run: |
+          export CI_COMMIT_REF_SHORT=${GITHUB_REF##*/}
+          echo "CI_COMMIT_REF_SLUG=${CI_COMMIT_REF_SHORT//./_}" >> $GITHUB_ENV
+          echo "CI_PROJECT_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
+
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Deploy to dev
+        env:
+          DOCKER_HOST: tcp://ene-devarm.s.enemon.pp.ua:2317
+          DOCKER_TLS_VERIFY: 1
+          DOCKER_CERT_PATH: "/tmp/certs"
+        run: |
+          export CI_REGISTRY_IMAGE="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
+          mkdir -p $DOCKER_CERT_PATH
+          echo ${{ secrets.TLSCACERT_ENE_DEVARM }} | base64 -d > $DOCKER_CERT_PATH/ca.pem
+          echo ${{ secrets.TLSCERT_ENE_DEVARM }} | base64 -d > $DOCKER_CERT_PATH/cert.pem
+          echo ${{ secrets.TLSKEY_ENE_DEVARM }} | base64 -d > $DOCKER_CERT_PATH/key.pem
+          echo $CI_REGISTRY_IMAGE
+          docker image pull $CI_REGISTRY_IMAGE
+          docker ps
+          docker image ls          
+          docker stack deploy -c .docker/docker-compose.yml -c .docker/docker-compose-dev.yml dev-${CI_PROJECT_NAME} --with-registry-auth
+          rm -rf $DOCKER_CERT_PATH
