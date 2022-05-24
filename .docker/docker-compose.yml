@@ -23,7 +23,7 @@ services:
         window: 120s
       labels:
         - "traefik.enable=true"
-        - "traefik.http.services.dev-${CI_PROJECT_NAME}.loadbalancer.server.port=4000"
+        - "traefik.http.services.dev-${CI_PROJECT_NAME}.loadbalancer.server.port=3333"
 
         - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.service=dev-${CI_PROJECT_NAME}"
         - "traefik.http.routers.dev-${CI_PROJECT_NAME}_https.middlewares=secure-headers@file"
