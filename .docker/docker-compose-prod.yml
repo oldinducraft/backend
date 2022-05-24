@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2048M
+      labels:
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_https.rule=Host(`back.oldinducraft.pp.ua`)
+        - "traefik.http.routers.${CI_PROJECT_NAME}_${CI_COMMIT_REF_SLUG}_${ENV_NAME}_http.rule=Host(`back.oldinducraft.pp.ua`)
