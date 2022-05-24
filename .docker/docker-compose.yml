@@ -64,7 +64,6 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-      restart: always
     environment:
       MYSQL_DATABASE: old_home
       MYSQL_ROOT_PASSWORD: password
