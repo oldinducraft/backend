@@ -29,9 +29,9 @@ RUN npm install --only=production
 
 COPY . .
 
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/build ./build
 
-#CMD ["node", "dist/main"]
+#CMD ["node", "build/main"]
 ARG enviroment_name
 ENV enviroment_name=$enviroment_name
 ENTRYPOINT npm run start:$enviroment_name
