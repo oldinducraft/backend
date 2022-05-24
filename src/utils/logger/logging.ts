@@ -107,6 +107,11 @@ export class Log implements CustomLogger {
     this.log.info(logArgs);
   }
 
+  public warn(data: LogFormat): void {
+    const logArgs = this.serializeLogInfo(data);
+    this.log.warn(logArgs);
+  }
+
   private errorStackFormat = format((info) => {
     if (info.error instanceof Error) {
       return Object.assign({}, info, {
