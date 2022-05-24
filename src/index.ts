@@ -3,7 +3,7 @@ import { Log } from './utils/logger/logging';
 import * as env from 'env-var';
 const log: Log = new Log();
 //TODO get from env var
-const httpPort = env.get('PORT').asIntPositive() || 4000;
+const httpPort = env.get('PORT').asIntPositive() || 3333;
 
 //TODO set aup dotenv config
 class App {
