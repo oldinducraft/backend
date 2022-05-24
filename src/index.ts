@@ -21,7 +21,16 @@ class App {
 
   public startServer(): any {
     if (!!this.options.http) {
-      this.log.info({ message: `test log http` });
+      this.express
+        .listen(httpPort, () => {
+          this.log.info({ message: `Started on port :${httpPort}` });
+        })
+        .on('error', (error: Error) => {
+          this.log.error({
+            message: 'Start up failed',
+            stack: error.stack || '',
+          });
+        });
     }
 
     if (!!this.options.socket) {
@@ -31,17 +40,6 @@ class App {
     if (!!this.options.client) {
       this.log.info({ message: `test log client` });
     }
-
-    this.express
-      .listen(httpPort, () => {
-        this.log.info({ message: `Started on port :${httpPort}` });
-      })
-      .on('error', (error: Error) => {
-        this.log.error({
-          message: 'Start up failed',
-          stack: error.stack || '',
-        });
-      });
   }
 }
 
