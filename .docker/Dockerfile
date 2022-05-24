@@ -29,7 +29,7 @@ COPY package*.json ./
 
 COPY --from=build /usr/src/build /usr/src/app
 
-#ARG enviroment_name
-#ENV enviroment_name=$enviroment_name
-ENTRYPOINT npm run dev
-#start:$enviroment_name
+ARG enviroment_name
+ENV enviroment_name=$enviroment_name
+ENTRYPOINT npm $enviroment_name
+

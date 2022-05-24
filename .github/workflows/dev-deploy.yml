@@ -38,7 +38,7 @@ jobs:
       - name: Build and tag image app
         run: |
           echo "${ENVIROMENT_NAME}"
-          docker build -f .docker/Dockerfile -t thing --cache-from="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}" --build-arg enviroment_name="${ENVIROMENT_NAME}" --target=build .
+          docker build -f .docker/Dockerfile -t thing --cache-from="ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}" --build-arg enviroment_name="${ENVIROMENT_NAME}" .
           docker tag thing "ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_REF##*/}"
 
       # Publish image to github package repository:
