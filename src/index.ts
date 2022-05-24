@@ -1,8 +1,9 @@
 import express from 'express';
 import { Log } from './utils/logger/logging';
+import * as env from 'env-var';
 const log: Log = new Log();
 //TODO get from env var
-const httpPort = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
+const httpPort = env.get('PORT').asIntPositive() || 4000;
 
 //TODO set aup dotenv config
 class App {

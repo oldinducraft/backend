@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "main": "build/index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "rm -rf build && tsc && node build",
     "build": "rm -rf build && tsc",
