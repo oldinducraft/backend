@@ -36,7 +36,7 @@ COPY . .
 COPY --from=build /usr/src/app/build ./build
 
 #CMD ["node", "build/main"]
-#ARG enviroment_name
-#ENV enviroment_name=$enviroment_name
-ENTRYPOINT npm run
+ARG enviroment_name
+ENV enviroment_name=$enviroment_name
+ENTRYPOINT npm run $enviroment_name
 #start:$enviroment_name
