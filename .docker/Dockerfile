@@ -1,37 +1,42 @@
-FROM node:12.19.0-alpine3.9 AS build
+FROM node:12.19.0 AS build
 
-WORKDIR /usr/src/app
+RUN apt update; apt install python3 make
+
+WORKDIR /usr/src/app/build
 
 COPY package*.json ./
 
 RUN npm install glob rimraf
 
-RUN npm install --only=development
+#RUN npm install --only=development
 
 COPY . .
 
-RUN npm run build
+RUN npm install
 
-ARG enviroment_name
-ENV enviroment_name=$enviroment_name
-ENTRYPOINT npm run start:$enviroment_name
+#RUN npm run build
+
+#ARG enviroment_name
+#ENV enviroment_name=$enviroment_name
+#ENTRYPOINT npm run start:$enviroment_name
 
 FROM node:12.19.0-alpine3.9 as production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+#ARG NODE_ENV=production
+#ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+#RUN npm install --only=production
 
 COPY . .
 
 COPY --from=build /usr/src/app/build ./build
 
 #CMD ["node", "build/main"]
-ARG enviroment_name
-ENV enviroment_name=$enviroment_name
-ENTRYPOINT npm run start:$enviroment_name
+#ARG enviroment_name
+#ENV enviroment_name=$enviroment_name
+ENTRYPOINT npm run
+#start:$enviroment_name
