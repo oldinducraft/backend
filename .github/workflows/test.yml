@@ -22,6 +22,8 @@ jobs:
   container-job:
     # Containers must run in Linux based operating systems
     runs-on: [self-hosted, ene-devarm]
+    steps:
+      - uses: actions/checkout@v2
     # Docker Hub image that `container-job` executes in
     container: node:16-bullseye
 
