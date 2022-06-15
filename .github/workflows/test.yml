@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, ene-devarm]
+    runs-on: [self-hosted, ene-devarm-r1]
     steps:
       - uses: actions/checkout@v2
       - name: list files
@@ -21,7 +21,7 @@ jobs:
   # Label of the container job
   container-job:
     # Containers must run in Linux based operating systems
-    runs-on: [self-hosted, ene-devarm]
+    runs-on: [self-hosted, ene-devarm-r1]
     steps:
       - uses: actions/checkout@v2
     # Docker Hub image that `container-job` executes in
