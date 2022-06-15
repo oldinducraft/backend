@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: [self-hosted, ene-devarm]
     steps:
-      - uses: actions/checkout@v2
+      #- uses: actions/checkout@v2
       - name: list files
         run: ls -al
       
@@ -23,13 +23,8 @@ jobs:
     # Containers must run in Linux based operating systems
     runs-on: [self-hosted, ene-devarm]
     steps:
-      - uses: actions/checkout@v2
-    # Docker Hub image that `container-job` executes in
-    container: nginx
-
-    # Service containers to run with `container-job`
-    services:
-      # Label used to access the service container
-      redis:
-        # Docker Hub image
-        image: redis
+      container: nginx
+        uses: actions/checkout@v2
+      services:
+        redis:
+          image: redis
