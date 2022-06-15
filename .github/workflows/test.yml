@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
     # Docker Hub image that `container-job` executes in
-    container: node:16-bullseye
+    container: nginx
 
     # Service containers to run with `container-job`
     services:
