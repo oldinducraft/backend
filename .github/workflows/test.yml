@@ -23,9 +23,9 @@ jobs:
     # Containers must run in Linux based operating systems
     runs-on: [self-hosted, ene-devarm]
     container: node:10.18-jessie
-      services:
-        redis:
-          image: redis
+    services:
+      redis:
+        image: redis
     steps:
       # Downloads a copy of the code in your repository before running CI tests
       - name: Check out repository code
