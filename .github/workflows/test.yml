@@ -22,7 +22,7 @@ jobs:
   container-job:
     # Containers must run in Linux based operating systems
     runs-on: [self-hosted, ene-devarm]
-    container: node:10.18-jessie
+    container: node:16-bullseye
     services:
       redis:
         image: redis
