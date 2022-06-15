@@ -23,8 +23,10 @@ jobs:
     # Containers must run in Linux based operating systems
     runs-on: [self-hosted, ene-devarm]
     steps:
-      container: nginx
+      - name: nginx
+        container: nginx
         uses: actions/checkout@v2
-      services:
-        redis:
-          image: redis
+      - name: redis
+        services:
+          redis:
+            image: redis
