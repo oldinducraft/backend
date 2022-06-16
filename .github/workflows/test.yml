@@ -21,7 +21,7 @@ jobs:
   # Label of the container job
   container-job:
     # Containers must run in Linux based operating systems
-    runs-on: [self-hosted, xloo-dev-d1]
+    runs-on: ubuntu-latest #[self-hosted, xloo-dev-d1]
     #container: nginx
     services:
       nginx:
