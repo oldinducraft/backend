@@ -6,22 +6,22 @@ on:
       - test
 
 jobs:
-  build:
-    runs-on: [self-hosted, ene-devarm]
-    steps:
-      #- uses: actions/checkout@v2
-      - name: list files
-        run: ls -al
+  # build:
+  #   runs-on: [self-hosted, ene-devarm]
+  #   steps:
+  #     #- uses: actions/checkout@v2
+  #     - name: list files
+  #       run: ls -al
       
-      - name: Set up PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: '7.2'
+  #     - name: Set up PHP
+  #       uses: shivammathur/setup-php@master
+  #       with:
+  #         php-version: '7.2'
 
   # Label of the container job
   container-job:
     # Containers must run in Linux based operating systems
-    runs-on: [self-hosted, ene-devarm]
+    runs-on: [self-hosted, xloo-dev-d1]
     container: node:16-bullseye
     services:
       redis:
