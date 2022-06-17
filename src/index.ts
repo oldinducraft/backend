@@ -41,6 +41,8 @@ class App {
         });
     }
 
+    console.log('test');
+
     if (!!this.options.socket) {
       this.log.info({ message: `test log socket` });
     }
