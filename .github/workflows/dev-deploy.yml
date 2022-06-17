@@ -1,10 +1,6 @@
 name: build/deploy docker image from prod
 
-on:
-  push:
-    # Publish `dev` as Docker `dev` image.
-    branches:
-      - cicd
+on: push
 
 env:
   GITHUB_REF: ${{ github.ref }}
